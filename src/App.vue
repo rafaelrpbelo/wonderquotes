@@ -14,11 +14,6 @@
         Click on quote to delete it!
       </div>
     </div>
-    <div class='row' v-show='quotes.length > 0'>
-      <div class='col alert alert-primary' role='alert'>
-        Click on quote to delete it!
-      </div>
-    </div>
   </div>
 </template>
 
