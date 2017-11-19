@@ -25,7 +25,7 @@
   export default {
     data() {
       return {
-        quotes: ['My first quote'],
+        quotes: [],
         maxQuotes: 10
       }
     },
