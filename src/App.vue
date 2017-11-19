@@ -2,14 +2,14 @@
   <div id='app' class='container'>
     <div class='row'>
       <div class='col'>
-        <progress-bar :min=0 :max='maxQuotes' :value='quotes.length'></progress-bar>
+        <progress-bar :min=0 :max='maxQuotes' :value='quotesCount()'></progress-bar>
       </div>
     </div>
 
     <quote-creator @quoteCreated='addNewQuote'></quote-creator>
     <quote-grid :quotes='quotes' @deletedQuote='deleteQuote'></quote-grid>
 
-    <div class='row' v-show='quotes.length > 0'>
+    <div class='row' v-show='quotesCount() > 0'>
       <div class='col alert alert-primary' role='alert'>
         Click on quote to delete it!
       </div>
@@ -31,10 +31,17 @@
     },
     methods: {
       addNewQuote(quote) {
+        if (this.quotesCount() >= this.maxQuotes) {
+          return alert('You should delete some quote to add more!');
+        }
+
         this.quotes.push(quote);
       },
       deleteQuote(index) {
         this.quotes.splice(index, 1);
+      },
+      quotesCount() {
+        return this.quotes.length
       }
     },
     components: {
