@@ -2,7 +2,13 @@
   <div id='app' class='container'>
     <div class='row'>
       <div class='col'>
-        <progress-bar :min=0 :max='maxQuotes' :value='quotesCount()'></progress-bar>
+        <progress-bar :min=0 :max=10 :value='quotesCount()'></progress-bar>
+      </div>
+    </div>
+
+    <div class='row mt-4' v-show='errors.length'>
+      <div class='col alert alert-danger' role='alert'>
+        {{ errors[0] }}
       </div>
     </div>
 
@@ -21,27 +27,32 @@
   import QuoteGrid from './components/QuoteGrid.vue';
   import QuoteCreator from './components/handlers/QuoteCreator.vue';
   import ProgressBar from './components/common/ProgressBar.vue';
+  import validate from './validations/baseValidator';
 
   export default {
     data() {
       return {
         quotes: [],
-        maxQuotes: 10
+        errors: []
       }
     },
     methods: {
       addNewQuote(quote) {
-        if (this.quotesCount() >= this.maxQuotes) {
-          return alert('You should delete some quote to add more!');
-        }
+        this.validate();
 
-        this.quotes.push(quote);
+        if (this.errors.length <= 0) {
+          this.quotes.push(quote);
+        }
       },
       deleteQuote(index) {
         this.quotes.splice(index, 1);
+        this.validate();
       },
       quotesCount() {
         return this.quotes.length
+      },
+      validate() {
+        this.errors = validate({maxQuotes: 10, currentQuotes: this.quotesCount()});
       }
     },
     components: {
